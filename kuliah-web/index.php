@@ -1,7 +1,10 @@
 <?php
 require 'function.php';
 
-$footballers = execQuery("SELECT * FROM footballers");
+// show all data
+$id = 0;
+
+$footballers = readData($id);
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +17,7 @@ $footballers = execQuery("SELECT * FROM footballers");
 <body>
     <h2>Football Players</h2>
 
-    <a href="tambah.php">Add Data</a>
+    <a href="insert.php">Add New</a>
     <br>
     <br>
 
@@ -32,7 +35,7 @@ $footballers = execQuery("SELECT * FROM footballers");
             <td><?= $i++; ?></td>
             <td><img src="img/<?= $p['image']; ?>" width=100></td>
             <td><?= $p['name']; ?></td>
-            <td><a href="detail.php?id=<?= $p['id']; ?>">View Detail</a></td>
+            <td><a href="view.php?id=<?= $p['id']; ?>">View Detail</a></td>
         </tr>
         <?php endforeach; ?>
     </table>

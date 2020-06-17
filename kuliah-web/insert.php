@@ -1,12 +1,12 @@
 <?php
 
-require_once 'function.php';
+require 'function.php';
 
-if (isset($_POST['addData'])) {
+if (isset($_POST['insertData'])) {
     if (insertData($_POST) > 0) {
         echo "<script>
                 alert('Data successfully added');
-                document.location.href = 'latihan3.php';
+                document.location.href = 'index.php';
             </script>";
     } else {
         echo "Failed adding data";
@@ -58,7 +58,7 @@ if (isset($_POST['addData'])) {
     </li>
 
     <li>
-        <button type="submit" name="addData">Save Data</button>
+        <button type="submit" name="insertData">Save Data</button>
     </li>
 
     </form>

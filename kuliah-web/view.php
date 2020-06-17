@@ -1,10 +1,17 @@
 <?php
+
 require 'function.php';
+
+// if id not existing in url
+if (!isset($_GET['id'])) {
+    header("Location: index.php");
+    exit;
+}
 
 // get id
 $id = $_GET['id'];
 
-$p = execQuery("SELECT * FROM footballers WHERE id=$id");
+$p = readData($id);
 ?>
 
 <!DOCTYPE html>
@@ -24,8 +31,8 @@ $p = execQuery("SELECT * FROM footballers WHERE id=$id");
         <li>Nationality : <?= $p['nationality']; ?></li>
         <li>Team : <?= $p['team']; ?></li>
         <li>Position : <?= $p['position']; ?></li>
-        <li><a href="">Edit</a> | <a href="">Delete</a></li>
-        <li><a href="latihan3.php">Back to Players List</a></li>
+        <li><a href="edit.php?id=<?= $p['id']; ?>">Edit</a> | <a href="delete.php?id=<?= $p['id']; ?>" onclick="return confirm('are you sure?');">Delete</a></li>
+        <li><a href="index.php">Back to List</a></li>
     </ul>
 </body>
 </html>
