@@ -15,9 +15,9 @@ function readData($id) {
 
     $result = mysqli_query($conn, $query);
 
-    if (mysqli_num_rows($result) == 1) {
-        return mysqli_fetch_assoc($result);
-    }
+    // if (mysqli_num_rows($result) == 1) {
+    //     return mysqli_fetch_assoc($result);
+    // }
 
     $rows = [];
     while($row = mysqli_fetch_assoc($result)) {
@@ -77,6 +77,22 @@ function deleteData($id) {
     mysqli_query($conn, $query);
     echo mysqli_error($conn);
     return mysqli_affected_rows($conn);
+}
+
+function findData($keyword) {    
+    $conn = openConnection();
+    $query = "SELECT * FROM footballers 
+                WHERE 
+            name LIKE '%$keyword%' OR position LIKE '%$keyword%'";
+
+    $result = mysqli_query($conn, $query);
+
+    $rows = [];
+    while($row = mysqli_fetch_assoc($result)) {
+        $rows[] = $row;
+    } 
+
+    return $rows;
 }
 
 ?>

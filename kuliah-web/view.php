@@ -11,7 +11,8 @@ if (!isset($_GET['id'])) {
 // get id
 $id = $_GET['id'];
 
-$p = readData($id);
+$footballers = readData($id);
+$p = $footballers[0];
 ?>
 
 <!DOCTYPE html>
