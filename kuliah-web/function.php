@@ -20,4 +20,24 @@ function execQuery($query) {
     return $rows;
 }
 
+function insertData($data) {
+    $conn = openConnection();
+
+    $name = htmlspecialchars($data['name']) ;
+    $year = htmlspecialchars($data['year']);
+    $nationality = htmlspecialchars($data['nationality']);
+    $team = htmlspecialchars($data['team']);
+    $position = htmlspecialchars($data['position']);
+    $image = htmlspecialchars($data['image']);
+    
+    $query = "INSERT INTO footballers 
+                VALUES
+            (null,'$name','$year','$nationality','$team','$position','$image');
+            ";
+
+    mysqli_query($conn, $query);
+    echo mysqli_error($conn);
+    return mysqli_affected_rows($conn);   
+}
+
 ?>

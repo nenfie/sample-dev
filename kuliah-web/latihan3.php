@@ -14,6 +14,10 @@ $footballers = execQuery("SELECT * FROM footballers");
 <body>
     <h2>Football Players</h2>
 
+    <a href="tambah.php">Add Data</a>
+    <br>
+    <br>
+
     <table border="1" cellpadding="10" cellspacing="0"> 
         <tr>
             <th>#</th>
