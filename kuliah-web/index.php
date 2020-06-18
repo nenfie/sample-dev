@@ -1,4 +1,12 @@
 <?php
+
+session_start();
+
+if (!isset($_SESSION['login'])) {
+    header("Location: login.php");
+    exit;
+}
+
 require 'function.php';
 
 // start with 0 to show all data
@@ -22,6 +30,9 @@ if (isset($_POST['findData'])) {
 </head>
 <body>
     <h2>Football Players</h2>
+
+    <a href="logout.php">Logout</a>
+    <br><br>
 
     <a href="insert.php">Add New</a>
     <br><br>

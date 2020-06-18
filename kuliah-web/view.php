@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['login'])) {
+    header("Location: login.php");
+    exit;
+}
 
 require 'function.php';
 
@@ -32,7 +38,7 @@ $p = $footballers[0];
         <li>Nationality : <?= $p['nationality']; ?></li>
         <li>Team : <?= $p['team']; ?></li>
         <li>Position : <?= $p['position']; ?></li>
-        <li><a href="edit.php?id=<?= $p['id']; ?>">Edit</a> | <a href="delete.php?id=<?= $p['id']; ?>" onclick="return confirm('are you sure?');">Delete</a></li>
+        <li><a href="update.php?id=<?= $p['id']; ?>">Edit</a> | <a href="delete.php?id=<?= $p['id']; ?>" onclick="return confirm('are you sure?');">Delete</a></li>
         <li><a href="index.php">Back to List</a></li>
     </ul>
 </body>
