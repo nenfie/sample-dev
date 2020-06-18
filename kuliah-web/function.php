@@ -115,24 +115,74 @@ function findData($keyword) {
 }
 
 function login($data) {
-    $conn = openConnection();
-
     $username = htmlspecialchars($data['username']);
     $password = htmlspecialchars($data['password']);
 
-    $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+    $conn = openConnection();
+    $query = "SELECT * FROM users WHERE username = '$username'";
 
-    if (execQuery($query)) {
-        $_SESSION['login'] = true;
-        header("Location: index.php");
-        exit;
-    } else {
-        return [
-            'error' => true,
-            'message' => 'Invalid Username or Password!'
-        ];
+    if ($user = execQuery($query)) {
+
+        if (password_verify($password, $user['password'])) {
+            $_SESSION['login'] = true;
+            header("Location: index.php");
+            exit;
+        }
+    }
+    return [
+        'error' => true,
+        'message' => 'Invalid Username or Password!'
+    ];
+}
+
+function register($data) {
+    $conn = openConnection();
+
+    $username = htmlspecialchars($data['username']);
+    $password1 = mysqli_real_escape_string($conn, $data['password1']);
+    $password2 = mysqli_real_escape_string($conn, $data['password2']);
+
+    if (empty($username) || empty($password1) || empty($password2)) {
+        echo "<script>
+            alert('Empty field detected');
+            document.location.href = 'register.php';
+        </script>";
+        return false;
     }
 
+    if (execQuery("SELECT * FROM users WHERE username = '$username'")) {
+        echo "<script>
+            alert('Username already exist');
+            document.location.href = 'register.php';                    
+        </script>";
+        return false;
+    }
+
+    if ($password1 !== $password2) {
+        echo "<script>
+            alert('Password and confirmation does not match');
+            document.location.href = 'register.php';
+        </script>";
+        return false;
+    }
+
+    if (strlen($password1) < 5) {
+        echo "<script>
+            alert('Password too short');
+            document.location.href = 'register.php';
+        </script>";
+        return false;
+    }
+
+    $password = password_hash($password1, PASSWORD_DEFAULT);
+
+    $query = "INSERT INTO users
+            VALUES 
+            (null,'$username','$password')";
+    
+    mysqli_query($conn, $query);
+    echo mysqli_error($conn);
+    return mysqli_affected_rows($conn);
 }
 
 ?>

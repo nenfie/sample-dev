@@ -42,6 +42,9 @@ if (isset($_POST['login'])) {
             <li>
                 <button type="submit" name="login">Login</button>
             </li>
+            <li>
+                <a href="register.php">Register</a>
+            </li>
         </ul>    
     </form>
 </body>
