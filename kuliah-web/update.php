@@ -43,7 +43,7 @@ if (isset($_POST['updateData'])) {
 <body>
     <h2>Edit Player Data</h2>
 
-    <form action="" method="POST">    
+    <form action="" method="POST" enctype="multipart/form-data">    
 
     <input type="hidden" name="id" value="<?= $p['id']; ?>">
     
@@ -73,8 +73,10 @@ if (isset($_POST['updateData'])) {
     </li>
 
     <li>
+        <input type="hidden" name="oldImage" value="<?= $p['image']; ?>">
         <label for="image">Image : </label>
-        <input type="text" name="image" id="image" required value="<?= $p['image']; ?>">
+        <input type="file" name="image" id="image" class="image" onchange="previewImage()">
+        <img src="img/<?= $p['image']; ?>" width="120" class="imgPreview" style="display: block;">
     </li>
 
     <li>
@@ -82,5 +84,7 @@ if (isset($_POST['updateData'])) {
     </li>
 
     </form>
+
+    <script src="js/script.js"></script>
 </body>
 </html>

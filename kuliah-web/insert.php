@@ -31,7 +31,7 @@ if (isset($_POST['insertData'])) {
 <body>
     <h2>Add New Player</h2>
 
-    <form action="" method="POST">
+    <form action="" method="POST" enctype="multipart/form-data">
 
     <li>
         <label for="name">Name : </label>
@@ -60,7 +60,8 @@ if (isset($_POST['insertData'])) {
 
     <li>
         <label for="image">Image : </label>
-        <input type="text" name="image" id="image" required>
+        <input type="file" name="image" id="image" class="image" onchange="previewImage()">
+        <img src="img/default.png" width="120" class="imgPreview" style="display: block;">
     </li>
 
     <li>
@@ -68,5 +69,8 @@ if (isset($_POST['insertData'])) {
     </li>
 
     </form>
+
+    <script src="js/script.js"></script>
+
 </body>
 </html>

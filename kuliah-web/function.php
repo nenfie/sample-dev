@@ -46,13 +46,72 @@ function readData($id) {
     return $rows;
 }
 
+function uploadFile() {
+    $fileName = $_FILES['image']['name'];
+    $fileType = $_FILES['image']['type'];
+    $fileSize = $_FILES['image']['size'];
+    $tmpFile = $_FILES['image']['tmp_name'];
+    $error = $_FILES['image']['error'];
+
+    // check file selection
+    if ($error == 4) {
+        // echo "<script>
+        //     alert('No file selected!');
+        //     </script>";
+        return 'default.png';
+    }
+
+    //  check file type
+    if ($fileType != 'image/jpeg' && $fileType != 'image/png') {
+        echo "<script>
+            alert('Invalid file type!');
+            </script>";
+        return false;
+    }
+
+    //  check file extension
+    $validExtension = ['jpg','jpeg','png'];
+    $fileExtension = explode('.', $fileName);
+    $fileExtension = strtolower(end($fileExtension));
+    if (!in_array($fileExtension, $validExtension)) {
+        echo "<script>
+            alert('Invalid image type!');
+            </script>";
+        return false;
+    }
+
+    // check file size
+    if ($fileSize > 1000000) {
+        echo "<script>
+            alert('File size too large!');
+            </script>";
+        return false;
+    }
+
+    // generate new file name
+    $newFileName = uniqid();
+    $newFileName .= '.';
+    $newFileName .= $fileExtension;
+
+    // upload file
+    move_uploaded_file($tmpFile, 'img/' . $newFileName);
+
+    return $newFileName;
+
+}
+
 function insertData($data) {
     $name = htmlspecialchars($data['name']) ;
     $year = htmlspecialchars($data['year']);
     $nationality = htmlspecialchars($data['nationality']);
     $team = htmlspecialchars($data['team']);
     $position = htmlspecialchars($data['position']);
-    $image = htmlspecialchars($data['image']);
+    // $image = htmlspecialchars($data['image']);
+
+    $image = uploadFile();    
+    if (!$image) {
+        return false;
+    }
     
     $conn = openConnection();
     $query = "INSERT INTO footballers 
@@ -71,8 +130,18 @@ function updateData($data) {
     $nationality = htmlspecialchars($data['nationality']);
     $team = htmlspecialchars($data['team']);
     $position = htmlspecialchars($data['position']);
-    $image = htmlspecialchars($data['image']);
+    $oldimage = htmlspecialchars($data['oldImage']);
+
+    $image = uploadFile();    
+    if (!$image) {
+        return false;
+    }
     
+    if ($image == 'default.png') {
+        $image = $oldimage;
+    }
+
+
     $conn = openConnection();
     $query = "UPDATE footballers SET 
                 name = '$name',
@@ -90,6 +159,13 @@ function updateData($data) {
 
 function deleteData($id) {
     $conn = openConnection();
+
+    // delete image file
+    $p = execQuery("SELECT * FROM footballers WHERE id = $id");
+    if ($p['image'] != 'default.png') {
+        unlink('img/' . $p['image']);
+    }
+
     $query = "DELETE FROM footballers WHERE id=$id";
 
     // mysqli_query($conn, $query) or die(mysqli_error($conn));
