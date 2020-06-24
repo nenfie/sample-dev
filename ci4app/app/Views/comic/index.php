@@ -1,11 +1,16 @@
 <?= $this->extend('layout/template'); ?>
 
 <?= $this->section('content'); ?>
-
 <div class="container">
     <div class="row">
         <div class="col">
+            <a href="/comic/create" class="btn btn-primary mt-3">Add Data</a>
             <h1 class="mt-2">Comic List</h1>
+            <?php if (session()->getFlashdata('message')) : ?>
+                <div class="alert alert-success" role="alert">
+                    <?= session()->getFlashdata('message'); ?>
+                </div>
+            <?php endif; ?>
             <table class="table">
                 <thead>
                     <tr>
@@ -32,5 +37,4 @@
         </div>
     </div>
 </div>
-
 <?= $this->endSection(); ?>

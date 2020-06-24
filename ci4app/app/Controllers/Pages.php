@@ -26,7 +26,7 @@ class Pages extends BaseController
     public function contact()
     {
         $data = [
-            'title' => 'Contact Us',
+            'title' => 'Contact Us | CI4App',
             'alamat' => [
                 [
                     'tipe' => 'Rumah',

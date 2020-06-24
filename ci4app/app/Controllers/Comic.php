@@ -25,8 +25,9 @@ class Comic extends BaseController
         // }
 
         // $comicModel = new \App\Models\ComicModel();
+
         $data = [
-            'title' => 'Comic List',
+            'title' => 'Comic List | CI4App',
             'comic' => $this->comicModel->getComic()
         ];
 
@@ -36,10 +37,40 @@ class Comic extends BaseController
     public function detail($slug)
     {
         $data = [
-            'title' => 'Comic Detail',
+            'title' => 'Comic Detail | CI4App',
             'comic' => $this->comicModel->getComic($slug)
         ];
 
+        if (empty($data['comic'])) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Comic title ' . $slug . ' is not found');
+        }
+
         return view('comic/detail', $data);
+    }
+
+    public function create()
+    {
+        $data = [
+            'title' => 'Add New Comic | CI4App'
+        ];
+
+        return view('comic/create', $data);
+    }
+
+    public function save()
+    {
+        $slug = url_title($this->request->getVar('title'), '-', true);
+
+        $this->comicModel->save([
+            'title' => $this->request->getVar('title'),
+            'slug' => $slug,
+            'author' => $this->request->getVar('author'),
+            'publisher' => $this->request->getVar('publisher'),
+            'cover' => $this->request->getVar('cover')
+        ]);
+
+        session()->setFlashdata('message', 'Data successfully saved');
+
+        return redirect()->to('/comic');
     }
 }

@@ -15,10 +15,8 @@
                             <h5 class="card-title"><?= $comic['title']; ?></h5>
                             <p class="card-text"><b>Author : </b><?= $comic['author']; ?></p>
                             <p class="card-text"><small class="text-muted"><b>Publisher : </b><?= $comic['publisher']; ?></small></p>
-
                             <a href="" class="btn btn-warning">Edit</a>
                             <a href="" class="btn btn-danger">Delete</a>
-
                             <br><br>
                             <a href="/comic">Return to Comic List</a>
                         </div>

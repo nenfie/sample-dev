@@ -12,7 +12,7 @@ class ComicModel extends Model
     // protected $returnType     = 'array';
     // protected $useSoftDeletes = true;
 
-    // protected $allowedFields = ['name', 'email'];
+    protected $allowedFields = ['title', 'slug', 'author', 'publisher', 'cover'];
 
     protected $useTimestamps = true;
     // protected $createdField  = 'created_at';
