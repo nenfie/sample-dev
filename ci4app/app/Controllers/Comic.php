@@ -50,8 +50,11 @@ class Comic extends BaseController
 
     public function create()
     {
+        // session();
+
         $data = [
-            'title' => 'Add New Comic | CI4App'
+            'title' => 'Add New Comic | CI4App',
+            'validation' => \Config\Services::validation()
         ];
 
         return view('comic/create', $data);
@@ -59,6 +62,20 @@ class Comic extends BaseController
 
     public function save()
     {
+        // input validation
+        if (!$this->validate([
+            'title' => [
+                'rules' => 'required|is_unique[comic.title]',
+                'errors' => [
+                    'required' => '{field} harus diisi.',
+                    'is_unique' => '{field} sudah terdaftar.'
+                ]
+            ]
+        ])) {
+            $validation = \Config\Services::validation();
+            return redirect()->to('/comic/create')->withInput()->with('validation', $validation);
+        }
+
         $slug = url_title($this->request->getVar('title'), '-', true);
 
         $this->comicModel->save([
