@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <a href="/comic/create" class="btn btn-primary mt-3">Add Data</a>
+            <a href="/comic/create" class="btn btn-primary mt-3">Add New Comic</a>
             <h1 class="mt-2">Comic List</h1>
             <?php if (session()->getFlashdata('message')) : ?>
                 <div class="alert alert-success" role="alert">

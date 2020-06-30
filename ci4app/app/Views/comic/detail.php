@@ -15,8 +15,18 @@
                             <h5 class="card-title"><?= $comic['title']; ?></h5>
                             <p class="card-text"><b>Author : </b><?= $comic['author']; ?></p>
                             <p class="card-text"><small class="text-muted"><b>Publisher : </b><?= $comic['publisher']; ?></small></p>
-                            <a href="" class="btn btn-warning">Edit</a>
-                            <a href="" class="btn btn-danger">Delete</a>
+
+                            <a href="/comic/edit/<?= $comic['slug']; ?>" class="btn btn-warning">Edit</a>
+
+                            <!-- <a href="/comic/delete/<?= $comic['id']; ?>" class="btn btn-danger">Delete</a> -->
+
+                            <!-- delete using method spoofing -->
+                            <form action="/comic/<?= $comic['id']; ?>" method="post" class="d-inline">
+                                <?= csrf_field(); ?>
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('are you sure?');">Delete</button>
+                            </form>
+
                             <br><br>
                             <a href="/comic">Return to Comic List</a>
                         </div>

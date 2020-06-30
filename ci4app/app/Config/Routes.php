@@ -34,7 +34,9 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Pages::index');
 
 $routes->get('/comic/create', 'Comic::create');
-$routes->get('/comic/(:segment)', 'Comic::detail/$1');
+$routes->get('/comic/edit/(:segment)', 'Comic::edit/$1');
+$routes->delete('/comic/(:num)', 'Comic::delete/$1');
+$routes->get('/comic/(:any)', 'Comic::detail/$1');
 
 // $routes->get('/coba', 'Coba::about');
 // $routes->get('/coba', function () {
