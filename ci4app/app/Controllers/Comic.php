@@ -70,10 +70,33 @@ class Comic extends BaseController
                     'required' => '{field} harus diisi.',
                     'is_unique' => '{field} sudah terdaftar.'
                 ]
+            ],
+            'cover' => [
+                // 'rules' => 'uploaded[cover]|max_size[cover,1024]|is_image[cover]|mime_in[cover,image/jpg,image/jpeg,image/png]',
+                'rules' => 'max_size[cover,1024]|is_image[cover]|mime_in[cover,image/jpg,image/jpeg,image/png]',
+                'errors' => [
+                    // 'uploaded' => 'Gambar belum dipilih',
+                    'max_size' => 'Ukuran file terlalu besar',
+                    'is_image' => 'File yang dipilih bukan gambar',
+                    'mime_in' => 'File ekstensi tidak valid'                                        
+                ]
             ]
         ])) {
-            $validation = \Config\Services::validation();
-            return redirect()->to('/comic/create')->withInput()->with('validation', $validation);
+            // $validation = \Config\Services::validation();
+            // return redirect()->to('/comic/create')->withInput()->with('validation', $validation);
+            return redirect()->to('/comic/create')->withInput();
+        }
+
+        $coverFile = $this->request->getFile('cover');
+
+        if ($coverFile->getError() == 4) {
+            $coverFileName = 'default.png';
+        } else {
+            // $coverFile->move('img');
+            // $coverFileName = $coverFile->getName();
+            
+            $coverFileName = $coverFile->getRandomName();
+            $coverFile->move('img', $coverFileName);
         }
 
         $slug = url_title($this->request->getVar('title'), '-', true);
@@ -83,7 +106,7 @@ class Comic extends BaseController
             'slug' => $slug,
             'author' => $this->request->getVar('author'),
             'publisher' => $this->request->getVar('publisher'),
-            'cover' => $this->request->getVar('cover')
+            'cover' => $coverFileName
         ]);
 
         session()->setFlashdata('message', 'Data successfully saved');
@@ -93,6 +116,13 @@ class Comic extends BaseController
 
     public function delete($id)
     {
+
+        $comic = $this->comicModel->find($id);
+
+        if ($comic['cover'] != 'default.png') {
+            unlink('img/' . $comic['cover']);
+        }
+
         $this->comicModel->delete($id);
 
         session()->setFlashdata('message', 'Data successfully deleted');
@@ -130,12 +160,34 @@ class Comic extends BaseController
                     'required' => '{field} harus diisi.',
                     'is_unique' => '{field} sudah terdaftar.'
                 ]
-            ]
+            ],
+            'cover' => [
+                'rules' => 'max_size[cover,1024]|is_image[cover]|mime_in[cover,image/jpg,image/jpeg,image/png]',
+                'errors' => [
+                    'max_size' => 'Ukuran file terlalu besar',
+                    'is_image' => 'File yang dipilih bukan gambar',
+                    'mime_in' => 'File ekstensi tidak valid'                                        
+                ]
+            ]    
         ])) {
-            $validation = \Config\Services::validation();
-            return redirect()->to('/comic/edit/' . $this->request->getVar('slug'))->withInput()->with('validation', $validation);
+            // $validation = \Config\Services::validation();
+            // return redirect()->to('/comic/edit/' . $this->request->getVar('slug'))->withInput()->with('validation', $validation);
+            return redirect()->to('/comic/edit/' . $this->request->getVar('slug'))->withInput();
         }
 
+        $coverOld = $this->request->getVar('coverOld');
+        $coverFile = $this->request->getFile('cover');
+
+        if ($coverFile->getError() == 4) {
+            $coverFileName = $coverOld;
+        } else {
+            $coverFileName = $coverFile->getRandomName();
+            $coverFile->move('img', $coverFileName);
+
+            if ($coverOld != 'default.png') {
+                unlink('img/' . $coverOld);   
+            }    
+        }
 
         $slug = url_title($this->request->getVar('title'), '-', true);
 
@@ -145,7 +197,7 @@ class Comic extends BaseController
             'slug' => $slug,
             'author' => $this->request->getVar('author'),
             'publisher' => $this->request->getVar('publisher'),
-            'cover' => $this->request->getVar('cover')
+            'cover' => $coverFileName
         ]);
 
         session()->setFlashdata('message', 'Data successfully updated');
