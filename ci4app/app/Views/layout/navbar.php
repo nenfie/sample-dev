@@ -11,6 +11,7 @@
                 <a class="nav-item nav-link" href="<?= base_url('/pages/about'); ?>">About</a>
                 <a class="nav-item nav-link" href="<?= base_url('/pages/contact'); ?>">Contact</a>
                 <a class="nav-item nav-link" href="<?= base_url('/comic'); ?>">Comic</a>
+                <a class="nav-item nav-link" href="<?= base_url('/orang'); ?>">Person</a>
             </div>
         </div>
     </div>
